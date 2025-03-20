@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
 
   form: {
     width: "100%",
-    height: "70%",
+    height: "75%",
     backgroundColor: "white",
     position: "absolute",
     bottom: 0,
