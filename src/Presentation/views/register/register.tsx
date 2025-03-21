@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   View,
@@ -24,9 +24,19 @@ export const RegisterScreen = () => {
     email,
     password,
     confirmPassword,
+    errorMessage,
     onChange,
     register,
   } = useViewModel();
+
+
+  //Para saber si la variable ya tiene establecido un valor.
+  useEffect(() => {
+    if (errorMessage !== ''){
+      ToastAndroid.show(errorMessage, ToastAndroid.LONG);
+    }
+  }, [errorMessage]);
+
 
   return (
     <View style={styles.container}>
