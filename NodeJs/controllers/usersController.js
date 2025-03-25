@@ -1,4 +1,27 @@
 const User = require("../models/user");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const key = require("../config/key");
+
+module.exports = {
+    login(req, res){
+        const email = req.body.email;
+        const password = req.body.password;
+
+        User.findByEmail(email, async(err, user) =>{
+            if(err) {
+                return res.status(500).json({
+                    success: false,
+                    message: "Error in database",
+                    error: err
+                });
+            }
+
+            if(!user) {
+                
+        })
+    }
+}
 
 module.exports = {
     register(req, res) {

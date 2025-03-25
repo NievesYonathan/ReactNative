@@ -3,6 +3,41 @@ const bcrypt = require('bcrypt');
 
 const User = {};
 
+User.findById = (id, result) => {
+    const sql = 'SELECT id, email, name, lastname, imag, password FROM users WHERE id = ?';
+
+    db.query(sql,
+        [id],
+        (err, res) => {
+            if (err) {
+                console.log("Error al consultar:", err);
+                result(err, null);
+            } else {
+                console.log("Usuario consultado:", user[0]);
+                result(null, user);
+            }
+        }
+    );
+}
+
+User.findByEmail = (email, result) => {
+    const sql = 'SELECT id, email, name, lastname, imag, password FROM users WHERE email = ?';
+
+    db.query(sql,
+        [email],
+        (err, res) => {
+            if (err) {
+                console.log("Error al consultar:", err);
+                result(err, null);
+            } else {
+                console.log("Usuario consultado:", user[0]);
+                result(null, user);
+            }
+        }
+    );
+}
+
+
 User.create = async (user, result) => {
     const hash = await bcrypt.hash(user.password, 10);
     const sql = `
@@ -27,8 +62,8 @@ User.create = async (user, result) => {
             user.phone,
             user.image,
             hash,
-            new Date(), // Fecha de creación
-            new Date()  // Fecha de actualización
+            new Date(), 
+            new Date() 
         ],
         (err, res) => {
             if (err) {
@@ -36,7 +71,7 @@ User.create = async (user, result) => {
                 result(err, null);
             } else {
                 console.log('id del nuevo usuario:', res.insertId);
-                result(null, res.insertId);  // Devuelve el ID del nuevo usuario
+                result(null, res.insertId);  
             }
         }
     );
