@@ -14,24 +14,24 @@ User.findById = (id, result) => {
                 result(err, null);
             } else {
                 console.log("Usuario consultado:", user[0]);
-                result(null, user);
+                result(null, user[0]);
             }
         }
     );
 }
 
 User.findByEmail = (email, result) => {
-    const sql = 'SELECT id, email, name, lastname, imag, password FROM users WHERE email = ?';
+    const sql = 'SELECT id, email, name, lastname, image, password FROM users WHERE email = ?';
 
     db.query(sql,
         [email],
-        (err, res) => {
+        (err, user) => {
             if (err) {
                 console.log("Error al consultar:", err);
                 result(err, null);
             } else {
                 console.log("Usuario consultado:", user[0]);
-                result(null, user);
+                result(null, user[0]);
             }
         }
     );
@@ -67,11 +67,11 @@ User.create = async (user, result) => {
         ],
         (err, res) => {
             if (err) {
-                console.log('error: ', err);
+                console.log('Error al crear el usuario:', err);
                 result(err, null);
             } else {
-                console.log('id del nuevo usuario:', res.insertId);
-                result(null, res.insertId);  
+                console.log('Usuario creado:', {id: res.insertId, ...user});
+                result(null, {id: res.insertId, ...user});  
             }
         }
     );
