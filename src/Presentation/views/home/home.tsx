@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, Image, TextInput, Button, ToastAndroid, TouchableOpacity, ScrollView } from 'react-native';
 import { RoundedButton } from '../../../Presentation/components/RoundedButton';
@@ -8,9 +8,15 @@ import useViewModel from './viewModel';
 import { CustomTextInput } from '../../components/CustomTextInput';
 
 export const HomeScreen = () => {
-    const { email, password, onChange } = useViewModel();
+    const { email, password, errorMessage, onChange, login } = useViewModel();
 
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+    useEffect(() => {
+        if (errorMessage) {
+            ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
+        }
+    }, [errorMessage]);
 
     return (
         <View style={styles.container}>

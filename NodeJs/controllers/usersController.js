@@ -24,7 +24,7 @@ module.exports = {
                 });
             }
 
-            const isPasswordValid = await bcrypt.compare(password, myUser.password); //Comparacion de contraseñas
+            const isPasswordValid = await bcrypt.compare(password, user.password); //Comparacion de contraseñas
             
             if (!isPasswordValid) {
                 const token = jwt.sign({
