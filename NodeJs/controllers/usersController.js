@@ -1,44 +1,44 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const key = require("../config/key");
+const keys = require("../config/keys");
 
 module.exports = {
     login(req, res) {
         const email = req.body.email;
         const password = req.body.password;
 
-        User.findByEmail(email, async (err, user) => {
+        User.findByEmail(email, async (err, myUser) => {
             if (err) {
                 return res.status(500).json({
                     success: false,
-                    message: "Error in database",
+                    message: "Error al consultar.",
                     error: err
                 });
             }
 
-            if (!user) {
+            if (!myUser) {
                 return res.status(401).json({
                     success: false,
                     message: "El email no existe en la BD.",
                 });
             }
 
-            const isPasswordValid = await bcrypt.compare(password, user.password); //Comparacion de contraseñas
+            const isPasswordValid = await bcrypt.compare(password, myUser.password); //Comparacion de contraseñas
             
-            if (!isPasswordValid) {
+            if (isPasswordValid) {
                 const token = jwt.sign({
-                    id: user.id,
-                    email: user.email
+                    id: myUser.id,
+                    email: myUser.email
                 }, keys.secretOrKey, {});
 
                 const data = {
-                    id: user.id,
-                    email: user.email,
-                    name: user.name,
-                    lastname: user.lastname,
-                    image: user.image,
-                    phone: user.phone,
+                    id: myUser.id,
+                    email: myUser.email,
+                    name: myUser.name,
+                    lastname: myUser.lastname,
+                    image: myUser.image,
+                    phone: myUser.phone,
                     session_token: `JWT ${token}`
                 };
 

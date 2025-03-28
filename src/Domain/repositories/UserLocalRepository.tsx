@@ -1,7 +1,7 @@
 import {User} from "../entities/User"
 
 export interface UserLocalRepository {
-    saveUser(user: User): void;
+    save(user: User): void;
     getUser(): Promise<User>;
-    removeUser(): Promise<void>;
+    remove(): Promise<void>;
 }

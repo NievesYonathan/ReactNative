@@ -1,9 +1,8 @@
-import User from "../../../NodeJs/models/user";
 import { User } from "../../Domain/entities/User";
-import { UserLocalReporsitory } from "../../Domain/repositories/AuthRepository";
-import { LocalStorage } from "./LocalStorage";
+import { UserLocalRepository } from "../../Domain/repositories/UserLocalRepository";
+import { LocalStorage } from "../sources/local/LocalStorage";
 
-export class UserLocalReporsitoryImpl implements UserLocalReporsitory {
+export class UserLocalReporsitoryImpl implements UserLocalRepository {
     async save(user: User): Promise<void> {
         const {save} = LocalStorage();
         await save('user', JSON.stringify(user));
@@ -12,7 +11,8 @@ export class UserLocalReporsitoryImpl implements UserLocalReporsitory {
     async getUser(): Promise<User> {
         const {getItem } = LocalStorage();
         const data = await getItem('user');
-        return user:User = JSON.parse(data as any);
+        const user: User = JSON.parse(data as any);
+        return user;
     }
 
     async remove(): Promise<void> {

@@ -57,10 +57,7 @@ export const HomeScreen = () => {
                 />
 
                 <View style={{ marginTop: 30,  }}>
-                    <RoundedButton text='ENTRAR' onPress={() => {
-                        console.log('Email: ' + email);
-                        console.log('Password: ' + password);
-                    }} />
+                    <RoundedButton text='ENTRAR' onPress={() => login()} />
                 </View>
 
                 <View style={styles.formRegister}>
