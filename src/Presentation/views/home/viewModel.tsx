@@ -2,6 +2,10 @@ import { SaveUserLocalUseCase } from "../../../Domain/useCases/userLocal/SaveUse
 import { GetUserLocalUseCase } from "../../../Domain/useCases/userLocal/GetUserLocal";
 import React, {useEffect, useState} from "react";
 import { LoginAuthUseCase } from "../../../Domain/useCases/auth/Login.Auth";
+import { Alert } from "react-native";
+import { useUserLocal } from "../../hooks/useUserLocal";
+
+
 
 const HomeViewModel = () => {
     const [errorMessage, setErrorMessage] = useState('');
@@ -12,14 +16,13 @@ const HomeViewModel = () => {
         password: ''
     });
 
+const { user, getUserSession } = useUserLocal();
+console.log("Usuario: " + JSON.stringify(user));
+
     useEffect(() => {
         getUserSession();
     }, []);
 
-    const getUserSession = async () => {
-        const user = await GetUserLocalUseCase();
-        console.log("Usuario Sesión: " + JSON.stringify(user));
-    }
 
     const onChange = (property: string, value: any) => {
         setvalues({...values, [property]: value });
@@ -50,6 +53,9 @@ const HomeViewModel = () => {
         }
     }
 
+        getUserSession ();
+
+
     const isValiForm = () => {
         if(values.email === '') {
             setErrorMessage('El email es requerida.');
@@ -66,6 +72,7 @@ const HomeViewModel = () => {
 
     return {
         ...values,
+        user,
         onChange,
         login,
         errorMessage,  // Mensaje de error
