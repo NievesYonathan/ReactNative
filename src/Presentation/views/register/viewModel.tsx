@@ -4,6 +4,9 @@ import { RegisterAuthUseCase } from '../../../Domain/useCases/auth/RegisterAuth'
 const RegisterViewModel = () => {
    // Define una variable de estado para el error
    const [errorMessage, setErrorMessage] = useState('');
+  
+   // Estado para almacenar mensajes de éxito
+  const [successMessage, setSuccessMessage] = useState('');
    const [values, setValues] = useState({
      id: 0,
      name: '',
@@ -19,7 +22,21 @@ const RegisterViewModel = () => {
    const onChange = (property: string, value: any) => {
      setValues({ ...values, [property]: value });
    };
- 
+
+ // Función para resetear el formulario a valores vacíos
+ const resetForm = () => {
+  setValues({
+    id: 0,
+    name: '',
+    lastname: '',
+    phone: '',
+    email: '',
+    image: '',
+    password: '',
+    confirmPassword: ''
+  });
+};
+
    // Función para validar el formulario
    const isValiForm = (): boolean => {
      // Limpiar el mensaje de error antes de comenzar la validación
@@ -57,30 +74,42 @@ const RegisterViewModel = () => {
      return true;
    };
  
-   // Función para registrar al usuario
    const register = async () => {
-     if (!isValiForm()) {
-       return; // Detener la ejecución si el formulario no es válido
-     }
+    if (!isValiForm()) {
+      return;
+    }
+
+    try {
+      // Llama al caso de uso para registrar el usuario
+      const response = await RegisterAuthUseCase(values);
+      console.log('Result: ', JSON.stringify(response));
+      
+      // Si el registro fue exitoso
+      if (response.success) {
+        // Establece mensaje de éxito
+        setSuccessMessage('Usuario registrado con éxito!');
+        // Limpia el formulario
+        resetForm();
+      } else {
+        // Establece mensaje de error si la API lo devuelve
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      // Manejo de errores de la petición
+      console.error('Error registering user:', error);
+      setErrorMessage('Ocurrió un error al registrar el usuario');
+    }
+  };
+
  
-     // Llamada al UseCase para registrar
-     try {
-       const response = await RegisterAuthUseCase(values);
-       console.log('Result: ', JSON.stringify(response));
-       // Aquí podrías manejar la respuesta, como redirigir al usuario
-     } catch (error) {
-       // Aquí podrías manejar cualquier error de la llamada a la API
-       console.error('Error registering user:', error);
-       setErrorMessage('Ocurrió un error al registrar el usuario');
-     }
-   };
- 
-   return {
-     ...values,
-     onChange,
-     register,
-     errorMessage
-   };
+  return {
+    ...values,
+    onChange,
+    register,
+    errorMessage,
+    successMessage, // Mensaje de éxito
+    resetForm  // Función para limpiar el formulario
+  };
  };
  
  export default RegisterViewModel;

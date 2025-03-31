@@ -5,6 +5,8 @@ import { LoginAuthUseCase } from "../../../Domain/useCases/auth/Login.Auth";
 
 const HomeViewModel = () => {
     const [errorMessage, setErrorMessage] = useState('');
+    // Estado para mensajes de éxito
+    const [successMessage, setSuccessMessage] = useState('');
     const [values, setvalues] = useState({
         email: '',
         password: ''
@@ -23,6 +25,14 @@ const HomeViewModel = () => {
         setvalues({...values, [property]: value });
     };
 
+    // Función para limpiar el formulario
+    const resetForm = () => {
+        setvalues({
+            email: '',
+            password: ''
+        });
+    };
+
 
     const login = async () => {
         if(isValiForm()) {
@@ -33,6 +43,9 @@ const HomeViewModel = () => {
                 setErrorMessage(response.message);
             } else {
                 await SaveUserLocalUseCase(response.data as any);
+                setSuccessMessage('Sesión iniciada correctamente!');
+                // Limpia el formulario
+                resetForm();
             }
         }
     }
@@ -55,7 +68,9 @@ const HomeViewModel = () => {
         ...values,
         onChange,
         login,
-        errorMessage  
+        errorMessage,  // Mensaje de error
+        successMessage,  // Mensaje de éxito
+        resetForm
     }
 
 };

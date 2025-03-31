@@ -8,7 +8,7 @@ import useViewModel from './viewModel';
 import { CustomTextInput } from '../../components/CustomTextInput';
 
 export const HomeScreen = () => {
-    const { email, password, errorMessage, onChange, login } = useViewModel();
+    const { email, password, errorMessage,  successMessage, onChange, login } = useViewModel();
 
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
@@ -17,6 +17,13 @@ export const HomeScreen = () => {
             ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
         }
     }, [errorMessage]);
+
+   // Efecto para mostrar mensajes de éxito
+   useEffect(() => {
+    if (successMessage) {
+        ToastAndroid.show(successMessage, ToastAndroid.SHORT);
+    }
+}, [successMessage]);
 
     return (
         <View style={styles.container}>

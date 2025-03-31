@@ -25,8 +25,10 @@ export const RegisterScreen = () => {
     password,
     confirmPassword,
     errorMessage,
+    successMessage,  // Mensaje de éxito
     onChange,
     register,
+    resetForm  // Función para registrar usuario
   } = useViewModel();
 
 
@@ -36,6 +38,16 @@ export const RegisterScreen = () => {
       ToastAndroid.show(errorMessage, ToastAndroid.LONG);
     }
   }, [errorMessage]);
+
+
+ // Efecto para mostrar mensajes de éxito
+ useEffect(() => {
+  if (successMessage !== '') {
+    // Muestra un Toast con el mensaje de éxito
+    ToastAndroid.show(successMessage, ToastAndroid.LONG);
+    // Aquí podrías agregar navegación a otra pantalla si lo deseas
+  }
+}, [successMessage]);
 
 
   return (
