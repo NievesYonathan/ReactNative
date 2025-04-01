@@ -16,8 +16,8 @@ const HomeViewModel = () => {
         password: ''
     });
 
-const { user, getUserSession } = useUserLocal();
-console.log("Usuario: " + JSON.stringify(user));
+    const { user, getUserSession } = useUserLocal();
+    console.log("Usuario: " + JSON.stringify(user));
 
     useEffect(() => {
         getUserSession();
@@ -53,7 +53,7 @@ console.log("Usuario: " + JSON.stringify(user));
         }
     }
 
-        getUserSession ();
+        //getUserSession ();
 
 
     const isValiForm = () => {

@@ -2,21 +2,30 @@ import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, Image, TextInput, Button, ToastAndroid, TouchableOpacity, ScrollView } from 'react-native';
 import { RoundedButton } from '../../../Presentation/components/RoundedButton';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../App';
 import useViewModel from './viewModel';
 import { CustomTextInput } from '../../components/CustomTextInput';
 
-export const HomeScreen = () => {
-    const { email, password, errorMessage,  successMessage, onChange, login } = useViewModel();
+interface Props extends StackNavigationProp<RootStackParamList, 'HomeScreen'> {};
 
-    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+export const HomeScreen = ({navigation, route }: Props) => {
+    const { email, password, errorMessage,  successMessage, user, onChange, login } = useViewModel();
+
+    //const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     useEffect(() => {
         if (errorMessage) {
             ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
         }
     }, [errorMessage]);
+
+    useEffect(() => {
+        if (user?.id !== null && user?.id !== undefined){
+            navigation.replace('Profile Info Screen');
+        }
+    }, [user]);
+
 
    // Efecto para mostrar mensajes de éxito
    useEffect(() => {
