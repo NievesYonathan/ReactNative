@@ -7,7 +7,7 @@ import { RootStackParamList } from '../../../../App';
 import useViewModel from './viewModel';
 import { CustomTextInput } from '../../components/CustomTextInput';
 
-interface Props extends StackNavigationProp<RootStackParamList, 'HomeScreen'> {};
+interface Props extends StackScreenProps<RootStackParamList, 'HomeScreen'> {};
 
 export const HomeScreen = ({navigation, route }: Props) => {
     const { email, password, errorMessage,  successMessage, user, onChange, login } = useViewModel();
@@ -15,24 +15,24 @@ export const HomeScreen = ({navigation, route }: Props) => {
     //const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     useEffect(() => {
-        if (errorMessage) {
+        if (errorMessage !== '') {
             ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
         }
     }, [errorMessage]);
 
     useEffect(() => {
         if (user?.id !== null && user?.id !== undefined){
-            navigation.replace('Profile Info Screen');
+            navigation.replace('ProfileInfoScreen');
         }
     }, [user]);
 
 
    // Efecto para mostrar mensajes de éxito
    useEffect(() => {
-    if (successMessage) {
-        ToastAndroid.show(successMessage, ToastAndroid.SHORT);
-    }
-}, [successMessage]);
+        if (successMessage) {
+            ToastAndroid.show(successMessage, ToastAndroid.SHORT);
+        }
+    }, [successMessage]);
 
     return (
         <View style={styles.container}>
